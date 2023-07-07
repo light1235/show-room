@@ -1,25 +1,42 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
+import {Canvas} from '@react-three/fiber'
+import {OrbitControls, TrackballControls} from '@react-three/drei'
+import {Perf} from "r3f-perf";
+import {useControls} from 'leva'
+
+import {useState} from "react";
+import Teleport from "./components/walkModule/walk";
+
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+     const [state, setState] = useState(true);
+
+     return (
+
+          <>
+
+               <Canvas camera={{position: [0, 1, 2]}} >
+
+                    <pointLight/>
+
+                    <ambientLight intensity={0.1} color="#eaeaea"/>
+                    <Teleport />
+                    <group helpers>
+                         <gridHelper args={[10, 10, "blue", "hotpink"]} onClick={() => setState(!state)}/>
+                         {/*<gridHelper args={[10, 10, "blue", "hotpink"]}/>*/}
+                         <axesHelper args={[5, 5]}/>
+                         {/*<OrbitControls/>*/}
+                         <Perf position="top-left"/>
+                    </group>
+               </Canvas>
+
+          </>
+     );
 }
 
 export default App;
+
+
