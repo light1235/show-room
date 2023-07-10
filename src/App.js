@@ -18,7 +18,7 @@ function App() {
 
           <>
 
-               <Canvas camera={{position: [0, 0, -2]}}
+               <Canvas camera={{position: [0, 0, -10]}}
                        onCreated={({ camera }) => camera.position.z = -10}>
                >
 

@@ -57,6 +57,7 @@ const Teleport = () => {
      let clickTimeout;
      let timeStone = true;
      let circleVisible = false;
+     let objAc;
 
 
      const PressDown = (event) => {
@@ -94,7 +95,7 @@ const Teleport = () => {
 
 
      const PressClick = (event) => {
-          if (!mouseState && timeStone) {
+          if (!mouseState && timeStone && objAc) {
                handleMouseClick(event);
           }
 
@@ -133,19 +134,25 @@ const Teleport = () => {
      return (
           <>
                <group ref={ref} position={[0, 1, 10]}>
-                    <PerspectiveCamera makeDefault />
+                    <PerspectiveCamera makeDefault  />
                </group>
                <mesh
                     visible={false}
-                    name='flat'
+                    name='floor'
                     rotation-x={-Math.PI / 2}
                     position={[-0.3, 0.0, 0]}
-                    onPointerMove={({point}) => {
+
+                    onPointerMove={(e) => {
+                         const { point } = e;
+                         e.stopPropagation();
                          circleRef.current.position.z = point.z;
                          circleRef.current.position.x = point.x;
 
                          circleRef1.current.position.z = point.z;
                          circleRef1.current.position.x = point.x;
+                         if (e.object.name === 'floor'){
+                              objAc = true;
+                         }
                     }}
 
                     onPointerUp={PressUp}
@@ -171,11 +178,19 @@ const Teleport = () => {
                     <ringGeometry args={[0.2, 0.22]} />
                     <meshBasicMaterial color={'white'} transparent opacity={0.75} />
                </mesh>
+               <mesh position={[0, 0, 0]} name='product' onPointerMove={e => {
+                    e.stopPropagation()
+                    if (e.object.name === 'product') {
+                         objAc = false;
+                    }
+               }}>
+                    <boxGeometry args={[1, 1, 1]}/>
+                    <meshStandardMaterial color={0x00ff00}/>
+               </mesh>
 
           </>
      );
 };
 
 export default Teleport;
-
 
