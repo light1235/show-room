@@ -3,6 +3,7 @@ import { useFrame } from '@react-three/fiber'
 import { PerspectiveCamera } from '@react-three/drei'
 import { Vector2, Vector3 } from 'three'
 import { MathUtils } from 'three'
+import Product from "../product/product";
 
 
 const Teleport = () => {
@@ -54,6 +55,7 @@ const Teleport = () => {
      //
 
      const [mouseState, setMouseState] = useState(false);
+     const [access, setAccess] = useState(null);
      let clickTimeout;
      let timeStone = true;
      let circleVisible = false;
@@ -95,7 +97,7 @@ const Teleport = () => {
 
 
      const PressClick = (event) => {
-          if (!mouseState && timeStone && objAc) {
+          if (!mouseState && timeStone && access) {
                handleMouseClick(event);
           }
 
@@ -130,6 +132,18 @@ const Teleport = () => {
           circleEffectRef.current.material.opacity = 1
      };
 
+     const showProduct = (e) => {
+          e.stopPropagation();
+          console.log(e.object.name);
+          if (e.object.name === 'product') {
+               objAc = false;
+               setAccess(false);
+          }
+     };
+     useEffect(() => {
+          console.log(access);
+     },[access])
+
 
      return (
           <>
@@ -145,6 +159,7 @@ const Teleport = () => {
                     onPointerMove={(e) => {
                          const { point } = e;
                          e.stopPropagation();
+                         console.log(e.object.name);
                          circleRef.current.position.z = point.z;
                          circleRef.current.position.x = point.x;
 
@@ -152,6 +167,7 @@ const Teleport = () => {
                          circleRef1.current.position.x = point.x;
                          if (e.object.name === 'floor'){
                               objAc = true;
+                              setAccess(true);
                          }
                     }}
 
@@ -178,16 +194,7 @@ const Teleport = () => {
                     <ringGeometry args={[0.2, 0.22]} />
                     <meshBasicMaterial color={'white'} transparent opacity={0.75} />
                </mesh>
-               <mesh position={[0, 0, 0]} name='product' onPointerMove={e => {
-                    e.stopPropagation()
-                    if (e.object.name === 'product') {
-                         objAc = false;
-                    }
-               }}>
-                    <boxGeometry args={[1, 1, 1]}/>
-                    <meshStandardMaterial color={0x00ff00}/>
-               </mesh>
-
+               <Product show={showProduct}  />
           </>
      );
 };

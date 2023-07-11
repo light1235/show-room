@@ -8,6 +8,7 @@ import {useControls} from 'leva'
 import React, {useState} from "react";
 import Teleport from "./components/walkModule/walk";
 import Decoration from "./components/room/room";
+import Product from "./components/product/product";
 
 
 
@@ -18,7 +19,7 @@ function App() {
 
           <>
 
-               <Canvas camera={{position: [0, 0, -10]}}
+               <Canvas camera={{position: [0, 0, -2]}}
                        onCreated={({ camera }) => camera.position.z = -10}>
                >
 
@@ -27,6 +28,7 @@ function App() {
                     <ambientLight intensity={0.1} color="#eaeaea"/>
                     <Teleport />
                     <Decoration />
+
                     {/*<OrbitControls/>*/}
                     {/*<mesh >*/}
                     {/*     <ringGeometry args={[0, 0.4,32]} />*/}
