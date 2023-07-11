@@ -9,6 +9,7 @@ import React, {useState} from "react";
 import Teleport from "./components/walkModule/walk";
 import Decoration from "./components/room/room";
 import Product from "./components/product/product";
+import OutLineEffects from "./components/outEffect/outEffect";
 
 
 
@@ -28,6 +29,7 @@ function App() {
                     <ambientLight intensity={0.1} color="#eaeaea"/>
                     <Teleport />
                     <Decoration />
+                    {/*<OutLineEffects />*/}
 
                     {/*<OrbitControls/>*/}
                     {/*<mesh >*/}

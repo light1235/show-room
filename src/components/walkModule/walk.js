@@ -4,6 +4,8 @@ import { PerspectiveCamera } from '@react-three/drei'
 import { Vector2, Vector3 } from 'three'
 import { MathUtils } from 'three'
 import Product from "../product/product";
+import {EffectComposer, Outline, Selection} from "@react-three/postprocessing";
+
 
 
 const Teleport = () => {
@@ -51,6 +53,9 @@ const Teleport = () => {
           MathUtils.lerp( circleEffectRef.current.scale.x, circleEffectRef.current.scale.y, delta* 20)
           MathUtils.lerp( circleEffectRef.current.scale.y, 200, delta* 20)
           circleEffectRef.current.material.opacity -= delta * 2
+          if (circleEffectRef.current.material.opacity <= 0) {
+               circleEffectRef.current.material.opacity = 0;
+          }
      })
      //
 
@@ -134,14 +139,14 @@ const Teleport = () => {
 
      const showProduct = (e) => {
           e.stopPropagation();
-          console.log(e.object.name);
-          if (e.object.name === 'product') {
+          // console.log(e.object.name);
+          if (e.object.name != 'floor') {
                objAc = false;
                setAccess(false);
           }
      };
      useEffect(() => {
-          console.log(access);
+          // console.log(access);
      },[access])
 
 
@@ -159,7 +164,7 @@ const Teleport = () => {
                     onPointerMove={(e) => {
                          const { point } = e;
                          e.stopPropagation();
-                         console.log(e.object.name);
+                         // console.log(e.object.name);
                          circleRef.current.position.z = point.z;
                          circleRef.current.position.x = point.x;
 
@@ -177,7 +182,7 @@ const Teleport = () => {
 
                     onPointerOver={() => setHovered(true)}
                     onPointerOut={() => setHovered(false)}
-                    onPointerMissed={() => console.log('missed')}
+                    // onPointerMissed={() => console.log('missed')}
 
                >
                     <planeGeometry args={[5, 9]} />
@@ -194,7 +199,14 @@ const Teleport = () => {
                     <ringGeometry args={[0.2, 0.22]} />
                     <meshBasicMaterial color={'white'} transparent opacity={0.75} />
                </mesh>
-               <Product show={showProduct}  />
+
+               <Selection>
+                    <EffectComposer multisampling={0} autoClear={false}>
+                         <Outline visibleEdgeColor="white" hiddenEdgeColor="white" blur width={1000} edgeStrength={100} />
+                    </EffectComposer>
+                    <Product show={showProduct}  />
+               </Selection>
+
           </>
      );
 };
