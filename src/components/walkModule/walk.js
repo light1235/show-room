@@ -5,6 +5,7 @@ import { Vector2, Vector3 } from 'three'
 import { MathUtils } from 'three'
 import Product from "../product/product";
 import {EffectComposer, Outline, Selection} from "@react-three/postprocessing";
+import TextureModule from "../textureModule/textureModule";
 
 
 
@@ -61,6 +62,7 @@ const Teleport = () => {
 
      const [mouseState, setMouseState] = useState(false);
      const [access, setAccess] = useState(null);
+     const [ShowMenu, setShowMenu] = useState(false);
      let clickTimeout;
      let timeStone = true;
      let circleVisible = false;
@@ -135,12 +137,12 @@ const Teleport = () => {
           circleEffectRef.current.position.copy(circleRef.current.position)
           circleEffectRef.current.scale.set(1, 1, 1)
           circleEffectRef.current.material.opacity = 1
+          setShowMenu(false)
      };
 
      const showProduct = (e) => {
           e.stopPropagation();
-          // console.log(e.object.name);
-          if (e.object.name != 'floor') {
+          if (e.object.name !== 'floor') {
                objAc = false;
                setAccess(false);
           }
@@ -179,7 +181,6 @@ const Teleport = () => {
                     onPointerUp={PressUp}
                     onPointerDown={PressDown}
                     onClick={ PressClick}
-
                     onPointerOver={() => setHovered(true)}
                     onPointerOut={() => setHovered(false)}
                     // onPointerMissed={() => console.log('missed')}
@@ -204,7 +205,8 @@ const Teleport = () => {
                     <EffectComposer multisampling={0} autoClear={false}>
                          <Outline visibleEdgeColor="white" hiddenEdgeColor="white" blur width={1000} edgeStrength={100} />
                     </EffectComposer>
-                    <Product show={showProduct}  />
+                    <Product show={showProduct} showMenu={ShowMenu} setShowMenu={setShowMenu} />
+                    {/*<TextureModule />*/}
                </Selection>
 
           </>

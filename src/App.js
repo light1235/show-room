@@ -26,12 +26,12 @@ function App() {
 
                     <pointLight/>
 
-                    <ambientLight intensity={0.1} color="#eaeaea"/>
+                    <ambientLight intensity={0.5} />
                     <Teleport />
                     <Decoration />
                     {/*<OutLineEffects />*/}
 
-                    {/*<OrbitControls/>*/}
+                    {/*<OrbitControls  />*/}
                     {/*<mesh >*/}
                     {/*     <ringGeometry args={[0, 0.4,32]} />*/}
                     {/*     <meshBasicMaterial color={'red'} transparent opacity={1} />*/}
