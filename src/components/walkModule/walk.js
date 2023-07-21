@@ -16,6 +16,7 @@ const Teleport = () => {
      const circleRef1 = useRef();
      const circleEffectRef = useRef()
      const to = useMemo(() => new Vector3(0, 1, 0), [])
+     // const to3 = useMemo(() => new Vector3(0, 1.8, 0), [])
      const dragVector = useMemo(() => new Vector2(), [])
 
      let dragONS = false
@@ -47,9 +48,10 @@ const Teleport = () => {
                document.removeEventListener('pointermove', onPointerMove)
           }
      })
-
      useFrame((_, delta) => {
           ref.current.position.lerp(to, delta * 1.2)
+          // console.log( ref.current.position);
+
           circleEffectRef.current.scale.x = circleEffectRef.current.scale.y += delta* 2
           MathUtils.lerp( circleEffectRef.current.scale.x, circleEffectRef.current.scale.y, delta* 20)
           MathUtils.lerp( circleEffectRef.current.scale.y, 200, delta* 20)
@@ -107,6 +109,10 @@ const Teleport = () => {
           if (!mouseState && timeStone && access) {
                handleMouseClick(event);
           }
+          if (!mouseState && timeStone) {
+
+               showClick(event);
+          }
 
      };
 
@@ -128,8 +134,10 @@ const Teleport = () => {
      };
 
 
-     const handleMouseClick = ({point}) => {
+     const handleMouseClick = (e) => {
+          const { point } = e;
           console.log('Клик выполнен -- движение');
+          // console.log(e.object.name);
           circleRef.current.material.opacity = 0.25;
           circleRef1.current.material.opacity = 0.1;
           // console.log(event);
@@ -146,7 +154,21 @@ const Teleport = () => {
                objAc = false;
                setAccess(false);
           }
+
      };
+     const showClick = (e) => {
+          console.log('only Click sofa');
+          if (e.object.name === 'table'){
+               to.set(-0.81, 1, 0.56);
+          }
+          if (e.object.name === 'sofa'){
+               to.set(-1.68, 1, -2);
+          }
+          if (e.object.name === 'chair'){
+               to.set(-1.23, 1, -1.45);
+          }
+     };
+
      useEffect(() => {
           // console.log(access);
      },[access])
@@ -205,7 +227,7 @@ const Teleport = () => {
                     <EffectComposer multisampling={0} autoClear={false}>
                          <Outline visibleEdgeColor="white" hiddenEdgeColor="white" blur width={1000} edgeStrength={100} />
                     </EffectComposer>
-                    <Product show={showProduct} showMenu={ShowMenu} setShowMenu={setShowMenu} />
+                    <Product show={showProduct} showMenu={ShowMenu} setShowMenu={setShowMenu} to={to} pressClick={PressClick}  pressUp={PressUp} pressDown={PressDown} />
                     {/*<TextureModule />*/}
                </Selection>
 
