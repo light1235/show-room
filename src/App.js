@@ -20,8 +20,7 @@ function App() {
 
           <>
 
-               <Canvas camera={{position: [0, 0, -2]}}
-                       onCreated={({ camera }) => camera.position.z = -10}>
+               <Canvas camera={{position: [0, 0, 0]}}>
                >
 
                     <pointLight/>
@@ -29,21 +28,9 @@ function App() {
                     <ambientLight intensity={0.5} />
                     <Teleport />
                     <Decoration />
-                    {/*<OutLineEffects />*/}
-
-                    {/*<OrbitControls target={[0,1,0]} />*/}
-                    {/*<mesh >*/}
-                    {/*     <ringGeometry args={[0, 0.4,32]} />*/}
-                    {/*     <meshBasicMaterial color={'red'} transparent opacity={1} />*/}
-                    {/*</mesh>*/}
-                    {/*<color attach="background" args={['red']}/>*/}
 
                     <group helpers>
-                         {/*<gridHelper args={[10, 10, "blue", "hotpink"]} onClick={() => setState(!state)}/>*/}
-                         {/*<gridHelper args={[10, 10, "blue", "hotpink"]}/>*/}
-                         {/*<axesHelper args={[5, 5]}/>*/}
-
-                         <Perf position="top-left"/>
+                         {/*<Perf position="top-left"/>*/}
                     </group>
                </Canvas>
 
