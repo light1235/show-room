@@ -129,7 +129,7 @@ const Product = ({show,showMenu,setShowMenu,to,pressClick,pressDown,pressUp}) =>
                </group>
                <Select  enabled={hovered === "table"} onClick={() => setCount(2)}>
                     <group scale={0.01} onClick={() => setShowMenu(true)}>
-                         <mesh  onPointerUp={pressUp}
+                         <mesh   onPointerUp={pressUp}
                                 onPointerDown={pressDown}
                                 onClick={pressClick}
                               geometry={nodes.Cube021_Material009_0001.geometry}  position={[-99.936, 33.325, -53.904]} rotation={[-Math.PI / 2, 0, 0]} scale={100} name='table'>

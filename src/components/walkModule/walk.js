@@ -1,11 +1,11 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
-import { useFrame } from '@react-three/fiber'
-import { PerspectiveCamera } from '@react-three/drei'
+import {Canvas, useFrame, useThree} from '@react-three/fiber'
+import {OrbitControls, PerspectiveCamera} from '@react-three/drei'
 import { Vector2, Vector3 } from 'three'
 import { MathUtils } from 'three'
 import Product from "../product/product";
 import {EffectComposer, Outline, Selection} from "@react-three/postprocessing";
-import TextureModule from "../textureModule/textureModule";
+
 
 
 
@@ -16,7 +16,7 @@ const Teleport = () => {
      const circleRef1 = useRef();
      const circleEffectRef = useRef()
      const to = useMemo(() => new Vector3(0, 1, 0), [])
-     // const to3 = useMemo(() => new Vector3(0, 1.8, 0), [])
+     const to3 = useMemo(() => new Vector3(0, -0.9, 0), [])
      const dragVector = useMemo(() => new Vector2(), [])
 
      let dragONS = false
@@ -25,7 +25,7 @@ const Teleport = () => {
           document.body.style.cursor = hovered ? 'pointer' : 'grab'
      }, [hovered])
 
-
+     const [enebledState, setEnebledState] = useState(false);
      useEffect(() => {
           const onPointerDown = () => {
                dragONS = true
@@ -47,10 +47,25 @@ const Teleport = () => {
                document.removeEventListener('pointerup', onPointerUp)
                document.removeEventListener('pointermove', onPointerMove)
           }
-     })
+     },[])
+
+
+     const { camera } = useThree()
+     const [lookAtState, setLookAtState] = useState(false);
+
+     const [lookPosition, setLookPosition] = useState(false);
+     const [lookTarget, setLookTarget] = useState(new Vector3(0, 1, -0.66));
+     const [orbitTarget, setOrbitTarget] = useState([-1.28,1,1.35]);
+
+
+     const meshRef = useRef();
+
+
      useFrame((_, delta) => {
           ref.current.position.lerp(to, delta * 1.2)
-          // console.log( ref.current.position);
+          if (lookPosition){
+               meshRef.current.target.lerp(lookTarget,delta / 2)
+          }
 
           circleEffectRef.current.scale.x = circleEffectRef.current.scale.y += delta* 2
           MathUtils.lerp( circleEffectRef.current.scale.x, circleEffectRef.current.scale.y, delta* 20)
@@ -65,6 +80,7 @@ const Teleport = () => {
      const [mouseState, setMouseState] = useState(false);
      const [access, setAccess] = useState(null);
      const [ShowMenu, setShowMenu] = useState(false);
+
      let clickTimeout;
      let timeStone = true;
      let circleVisible = false;
@@ -137,7 +153,7 @@ const Teleport = () => {
      const handleMouseClick = (e) => {
           const { point } = e;
           console.log('Клик выполнен -- движение');
-          // console.log(e.object.name);
+          console.log(e.object.name);
           circleRef.current.material.opacity = 0.25;
           circleRef1.current.material.opacity = 0.1;
           // console.log(event);
@@ -146,6 +162,13 @@ const Teleport = () => {
           circleEffectRef.current.scale.set(1, 1, 1)
           circleEffectRef.current.material.opacity = 1
           setShowMenu(false)
+
+          setOrbitTarget([0,0,0])
+          setEnebledState(false)
+          setLookPosition(false)
+          // ref.current.rotation.y = 0.0;
+          ref.current.rotation.z = 0.0
+          ref.current.rotation.x = 0.0
      };
 
      const showProduct = (e) => {
@@ -157,12 +180,19 @@ const Teleport = () => {
 
      };
      const showClick = (e) => {
-          console.log('only Click sofa');
+
           if (e.object.name === 'table'){
-               to.set(-0.81, 1, 0.56);
+               to.set(-1.28,1,1.35)
+               // setLookPosition(true);
+               // setEnebledState(true)
+               // setOrbitTarget([-1.28,1,1.35])
+               // ref.current.rotation.y = 0.18
           }
           if (e.object.name === 'sofa'){
                to.set(-1.68, 1, -2);
+               // setLookPosition(true);
+               // setEnebledState(true)
+               // setOrbitTarget([-1.68, 1, -2])
           }
           if (e.object.name === 'chair'){
                to.set(-1.23, 1, -1.45);
@@ -176,7 +206,7 @@ const Teleport = () => {
 
      return (
           <>
-               <group ref={ref} position={[0, 1, 10]}>
+               <group ref={ref} position={[0, 1, 0]}>
                     <PerspectiveCamera makeDefault  />
                </group>
                <mesh
@@ -227,13 +257,23 @@ const Teleport = () => {
                     <EffectComposer multisampling={0} autoClear={false}>
                          <Outline visibleEdgeColor="white" hiddenEdgeColor="white" blur width={1000} edgeStrength={100} />
                     </EffectComposer>
-                    <Product show={showProduct} showMenu={ShowMenu} setShowMenu={setShowMenu} to={to} pressClick={PressClick}  pressUp={PressUp} pressDown={PressDown} />
-                    {/*<TextureModule />*/}
+                    <Product show={showProduct} showMenu={ShowMenu} setShowMenu={setShowMenu} to={to} pressClick={PressClick}  pressUp={PressUp} pressDown={PressDown}  />
                </Selection>
+
+               {lookPosition &&
+
+               <OrbitControls target={orbitTarget}
+                              ref={meshRef}
+                              enabled={enebledState}
+                              rotateSpeed={2.25}
+                              position={[0,1,0]}
+               />
+               }
+
 
           </>
      );
-};
+}
 
 export default Teleport;
 

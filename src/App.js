@@ -31,7 +31,7 @@ function App() {
                     <Decoration />
                     {/*<OutLineEffects />*/}
 
-                    {/*<OrbitControls  />*/}
+                    {/*<OrbitControls target={[0,1,0]} />*/}
                     {/*<mesh >*/}
                     {/*     <ringGeometry args={[0, 0.4,32]} />*/}
                     {/*     <meshBasicMaterial color={'red'} transparent opacity={1} />*/}
