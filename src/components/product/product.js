@@ -9,7 +9,7 @@ import * as THREE from 'three'
 import { Vector3 } from 'three'
 
 const Product = ({show,showMenu,setShowMenu,to,pressClick,pressDown,pressUp}) => {
-     const { nodes, materials } = useGLTF('./models/product.glb')
+     const { nodes, materials } = useGLTF('./models/modelDraco.gltf')
      const [hovered, hover] = useState();
 
      const [count, setCount] = useState(null);
@@ -34,7 +34,7 @@ const Product = ({show,showMenu,setShowMenu,to,pressClick,pressDown,pressUp}) =>
      ])
      const Array3 = useLoader(TextureLoader, [
           './img/table/1.jpg',
-          './img/table/2.png',
+          './img/table/2.jpg',
           './img/table/3.jpg',
           './img/table/4.jpg',
      ])
@@ -168,4 +168,4 @@ const Product = ({show,showMenu,setShowMenu,to,pressClick,pressDown,pressUp}) =>
 
 export default Product;
 
-useGLTF.preload('./models/product.glb')
+useGLTF.preload('./models/modelDraco.gltf')
